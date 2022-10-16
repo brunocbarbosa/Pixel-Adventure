@@ -1,25 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    [Header("Attributes")]
     public float speed;
     public float jumpForce;
     public int life;
+    public int melon;
     
+    [Header("Components")]
     private Vector2 direction;
     private bool isGrounded;
     private bool recovery;
 
+    [Header("UI")]
+    public TextMeshProUGUI melonText;
+    public TextMeshProUGUI lifeText;
     public Rigidbody2D rigidBody;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
+    public GameObject gameOver;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        lifeText.text = life.ToString();
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -51,11 +61,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Death()
+    public void Trampoline()
     {
-
+        
+        animator.SetInteger("transition", 2);
+        rigidBody.AddForce(new Vector2(0, jumpForce + 5), ForceMode2D.Impulse);
+        isGrounded = false;
+        
     }
 
+    
     //Animations
     void PlayAnimation()
     {
@@ -86,7 +101,6 @@ public class Player : MonoBehaviour
 
     public void Hit()
     {
-     
         if (!recovery)
         {
             StartCoroutine(Flick());
@@ -94,17 +108,41 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator Flick()
-    {
-        recovery = true;
-        spriteRenderer.color = new Color(1, 1, 1, 0);
-        yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = new Color(1, 1, 1, 1);
-        yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = new Color(1, 1, 1, 0);
-        yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = new Color(1, 1, 1, 1);
+    {       
         life--;
+        if (life <= 0)
+        {
+            Death();
+        }
+        lifeText.text = life.ToString();
+        recovery = true;
+        for (int i = 0; i < 4; i++)
+        {
+            spriteRenderer.color = new Color(1, 1, 1, 0);
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = new Color(1, 1, 1, 1);
+            yield return new WaitForSeconds(0.2f);
+        }
+
         recovery = false;
+    }
+
+    void Death()
+    {
+       gameOver.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    public void IncreaseScore()
+    {
+        melon++;
+        melonText.text = melon.ToString();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
