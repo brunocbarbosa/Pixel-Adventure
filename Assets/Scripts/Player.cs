@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     {
         lifeText.text = life.ToString();
         Time.timeScale = 1;
+
+        //Load player in new scene with statistics 
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
