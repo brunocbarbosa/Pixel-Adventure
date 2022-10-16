@@ -102,17 +102,17 @@ public class Player : MonoBehaviour
 
     }
 
-    public void Hit()
+    public void Hit(int hitNumber)
     {
         if (!recovery)
         {
-            StartCoroutine(Flick());
+            StartCoroutine(Flick(hitNumber));
         }
     }
 
-    IEnumerator Flick()
+    IEnumerator Flick(int hitNumber)
     {       
-        life--;
+        life = life - hitNumber;
         if (life <= 0)
         {
             Death();
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
     public void RestartGame()
     {
         Destroy(gameObject);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 

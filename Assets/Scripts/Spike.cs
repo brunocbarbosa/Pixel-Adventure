@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
+    private int hitNumber = 1; 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Player>().Hit();
+            collision.GetComponent<Player>().Hit(hitNumber);
         }
     }
 }
