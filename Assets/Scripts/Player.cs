@@ -132,13 +132,14 @@ public class Player : MonoBehaviour
 
     void Death()
     {
-       gameOver.SetActive(true);
+        gameOver.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Destroy(gameObject);
+        SceneManager.LoadScene(0);
     }
 
 
