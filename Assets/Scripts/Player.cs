@@ -24,10 +24,17 @@ public class Player : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public GameObject gameOver;
-    
+
+    [Header("FXS")]
+    public AudioClip jumpSound;
+    public AudioClip hitSound;
+    public AudioClip startSound;
+    public AudioClip gameOverSound;
+
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.instance.PlayFX(startSound);
         lifeText.text = life.ToString();
         Time.timeScale = 1;
 
@@ -58,6 +65,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && isGrounded == true)
         {
+            GameManager.instance.PlayFX(jumpSound);
             animator.SetInteger("transition", 2);
             rigidBody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             isGrounded = false;
@@ -106,6 +114,7 @@ public class Player : MonoBehaviour
     {
         if (!recovery)
         {
+            GameManager.instance.PlayFX(hitSound);
             StartCoroutine(Flick(hitNumber));
         }
     }
@@ -132,6 +141,7 @@ public class Player : MonoBehaviour
 
     void Death()
     {
+        GameManager.instance.PlayFX(gameOverSound);
         gameOver.SetActive(true);
         Time.timeScale = 0;
     }
