@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
     public void RestartGame()
     {
         Destroy(gameObject);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(0);
     }
 
 
