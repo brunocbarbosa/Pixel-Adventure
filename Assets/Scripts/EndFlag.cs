@@ -5,11 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class EndFlag : MonoBehaviour
 {
+    public int stagenumber;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            SceneManager.LoadScene(1);
+            if (stagenumber == 3)
+            {
+                collision.transform.GetComponent<Player>().FinishGame();
+            }
+            else
+            {
+                NextStage(stagenumber);
+            }
+           
         }
+    }
+
+    void NextStage(int stage)
+    {
+        SceneManager.LoadScene(stage);
     }
 }

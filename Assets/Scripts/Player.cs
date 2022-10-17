@@ -24,12 +24,14 @@ public class Player : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public GameObject gameOver;
+    public GameObject finishGAme;
 
     [Header("FXS")]
     public AudioClip jumpSound;
     public AudioClip hitSound;
     public AudioClip startSound;
     public AudioClip gameOverSound;
+    public AudioClip finishSound;
 
     // Start is called before the first frame update
     void Start()
@@ -150,6 +152,13 @@ public class Player : MonoBehaviour
     {
         Destroy(gameObject);
         SceneManager.LoadScene(0);
+    }
+
+    public void FinishGame()
+    {
+        GameManager.instance.PlayFX(finishSound);
+        finishGAme.SetActive(true);
+        Time.timeScale = 0;
     }
 
 
